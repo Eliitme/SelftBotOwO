@@ -65,7 +65,7 @@ async def s(ctx):
                     if msgContent:
                         await gem(ctx, msgContent)
 
-            if msg.author.id == 408785106942164992 and 'capcha' in msg.content.lower():
+            if msg.author.id == 408785106942164992 and 'captcha' in msg.content.lower():
                 async with ctx.typing():
                     await asyncio.sleep(1)
                     await ctx.send(f"{prefix}s")
