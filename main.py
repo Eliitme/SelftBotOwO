@@ -28,7 +28,8 @@ bot = commands.Bot(command_prefix=prefix,
 
 
 @bot.command(pass_context=True)
-async def abc(ctx):
+async def s(ctx):
+    clientId = ctx.message.channel.id
     await ctx.message.delete()
     global dmcs
     dmcs = True
@@ -42,11 +43,23 @@ async def abc(ctx):
             await ctx.send('vb')
             print(f"{Fore.GREEN}succefully owob")
 
-        recentMsg = await ctx.bot.get_channel(
-            ctx.message.channel.id).history(limit=5).flatten()
+        recentMsg = await ctx.bot.get_channel(clientId).history(limit=5).flatten()
         for msg in recentMsg:
-            if msg.author.id == 408785106942164992 and 'spent' in msg.content:
-                await gem(ctx)
+            if msg.author.id == 408785106942164992 and 'spent' in msg.content.lower():
+                useGem = random.choice([1, 2])
+                print(f"{Fore.MAGENTA} {useGem}")
+                if useGem == 1:
+                    async with ctx.typing():
+                        await asyncio.sleep(random.choice([1, 2, 3]))
+                        await ctx.send('vinv')
+                    checkInv = await ctx.bot.get_channel(clientId).history(limit=5).flatten()
+                    msgContent = ''
+                    for msgonce in checkInv:
+                        if 'inventory' in msgonce.content.lower():
+                            msgContent = msgonce.content.lower()
+                    if msgContent:
+                        await gem(ctx, msgContent)
+
             if msg.author.id == 408785106942164992 and 'capcha' in msg.content.lower():
                 async with ctx.typing():
                     await asyncio.sleep(1)
@@ -56,21 +69,12 @@ async def abc(ctx):
         await asyncio.sleep(random.choice([17, 20]))
 
 
-async def gem(ctx):
-    inv = 0
-    quantity = 0
-    async with ctx.typing():
-        await asyncio.sleep(random.choice([1, 2, 3]))
-        await ctx.send('vinv')
-    checkInv = await ctx.bot.get_channel(ctx.message.channel.id).history(limit=10).flatten()
+async def gem(ctx, msg):
     arrQuantity = []
-
     invWithQuantity = {}
 
-    for msg in checkInv:
-        if 'inventory' in msg.content.lower():
-            inv = re.findall(r'`(.*?)`', msg.content)
-            quantity = re.findall(r'>(.*?)\s', msg.content)
+    inv = re.findall(r'`(.*?)`', msg)
+    quantity = re.findall(r'>(.*?)\s', msg)
 
     for item in quantity:
         arrQuantity.append(item.strip().translate(str.maketrans(dict)))
@@ -104,7 +108,7 @@ async def gem(ctx):
 
 
 @bot.command()
-async def stop(ctx):
+async def z(ctx):
     await ctx.message.delete()
     global dmcs
     dmcs = False

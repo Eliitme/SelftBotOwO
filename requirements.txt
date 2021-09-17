@@ -1,3 +1,5 @@
 discord
 asyncio
 python-decouple
+flask
+webserver
