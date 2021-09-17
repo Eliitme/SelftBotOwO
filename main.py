@@ -18,7 +18,6 @@ prefix = "q"
 
 keep_alive()
 token = config("TOKEN")
-channelId = config("CHANNEL_ID")
 
 #---------------#
 
