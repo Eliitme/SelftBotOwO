@@ -63,7 +63,7 @@ async def s(ctx):
             if msg.author.id == 408785106942164992 and 'capcha' in msg.content.lower():
                 async with ctx.typing():
                     await asyncio.sleep(1)
-                    await ctx.send('qstop')
+                    await ctx.send('qs')
                     print(f"{Fore.RED}stop capcha")
 
         await asyncio.sleep(random.choice([17, 20]))
