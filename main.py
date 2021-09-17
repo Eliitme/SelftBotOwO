@@ -3,7 +3,7 @@ from discord.ext import commands
 from colorama import Fore
 import asyncio
 from webserver import keep_alive
-import json
+import time
 import re
 
 
@@ -18,6 +18,7 @@ prefix = "q"
 
 keep_alive()
 token = config("TOKEN")
+prefix_owo = config("PREFIX_OWO")
 
 #---------------#
 
@@ -25,6 +26,10 @@ bot = commands.Bot(command_prefix=prefix,
                    help_command=None,
                    case_insensitive=True,
                    self_bot=True)
+
+
+def at():
+    return f'{time.strftime("%d %b %Y %H:%M:%S", time.localtime())}'
 
 
 @bot.command(pass_context=True)
@@ -36,12 +41,12 @@ async def s(ctx):
     while dmcs:
         async with ctx.typing():
             await asyncio.sleep(1)
-            await ctx.send('vh')
-            print(f"{Fore.GREEN}succefully owoh")
+            await ctx.send(f"{prefix_owo}h")
+            print(f"{at()}: {Fore.GREEN}succefully owoh")
         async with ctx.typing():
             await asyncio.sleep(1)
-            await ctx.send('vb')
-            print(f"{Fore.GREEN}succefully owob")
+            await ctx.send(f"{prefix_owo}b")
+            print(f"{at()}: {Fore.GREEN}succefully owob")
 
         recentMsg = await ctx.bot.get_channel(clientId).history(limit=5).flatten()
         for msg in recentMsg:
@@ -51,7 +56,7 @@ async def s(ctx):
                 if useGem == 1:
                     async with ctx.typing():
                         await asyncio.sleep(random.choice([1, 2, 3]))
-                        await ctx.send('vinv')
+                        await ctx.send(f"{prefix_owo}inv")
                     checkInv = await ctx.bot.get_channel(clientId).history(limit=5).flatten()
                     msgContent = ''
                     for msgonce in checkInv:
@@ -63,8 +68,8 @@ async def s(ctx):
             if msg.author.id == 408785106942164992 and 'capcha' in msg.content.lower():
                 async with ctx.typing():
                     await asyncio.sleep(1)
-                    await ctx.send('qs')
-                    print(f"{Fore.RED}stop capcha")
+                    await ctx.send(f"{prefix}s")
+                    print(f"{at()}: {Fore.RED}stop capcha")
 
         await asyncio.sleep(random.choice([17, 20]))
 
@@ -102,8 +107,8 @@ async def gem(ctx, msg):
     for gem in [gem1, gem2, gem3]:
         async with ctx.typing():
             await asyncio.sleep(random.choice([7, 8, 9]))
-            await ctx.send('vuse ' + gem)
-            print(f"{Fore.YELLOW}use gem " + gem)
+            await ctx.send(f"{prefix_owo}use {gem}")
+            print(f"{at()}: {Fore.YELLOW}use gem {gem}")
             await asyncio.sleep(1)
 
 
