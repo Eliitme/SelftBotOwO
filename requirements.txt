@@ -3,3 +3,4 @@ asyncio
 python-decouple
 flask
 webserver
+requests
