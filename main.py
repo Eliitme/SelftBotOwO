@@ -1,5 +1,3 @@
-from asyncio.windows_events import NULL
-import json
 import discord
 from discord.ext import commands
 from colorama import Fore
@@ -7,8 +5,7 @@ import asyncio
 from webserver import keep_alive
 import time
 import re
-import requests
-import urllib.parse
+
 
 import random
 
@@ -31,7 +28,7 @@ prefix = "q"
 
 keep_alive()
 token = config("TOKEN")
-prefix_owo = config("PREFIX_OWO")
+prefix_owo = 'owo'
 
 #---------------#
 
@@ -138,9 +135,10 @@ async def z(ctx):
 
 @bot.command(pass_context=True)
 async def count(ctx):
+    content = ctx.message.content
     await ctx.message.delete()
 
-    channelId = 899852247607943178
+    channelId = content.split(' ')[1]
 
     channel = bot.get_channel(channelId)
 
@@ -161,7 +159,7 @@ async def count(ctx):
                 )
                 last_num = await convertNum(last_msg.content.split()[0])
 
-                if (last_num):
+                if (last_num != ''):
                     await channel.send(last_num + 1)
                     print(f"{at()}: {Fore.RED}count: {last_num + 1}")
                     await asyncio.sleep(2)
@@ -169,11 +167,11 @@ async def count(ctx):
 
 
 async def convertNum(str):
-    num = NULL
+    num = ''
     try:
         num = int(str)
     except:
-        num = NULL
+        num = ''
 
     return num
 
