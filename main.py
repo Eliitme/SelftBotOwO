@@ -134,6 +134,24 @@ async def z(ctx):
 
 
 @bot.command(pass_context=True)
+async def spam(ctx):
+    content = ctx.message.content
+    status = content.split(' ')[1]
+    await ctx.message.delete()
+    global spamOwO
+    if (status == 'on'):
+        spamOwO = True
+        print(f"{at()}: {Fore.GREEN}spam on")
+    elif (status == 'off'):
+        spamOwO = False
+        print(f"{at()}: {Fore.RED}spam off")
+
+    while spamOwO:
+        await asyncio.sleep(random.choice([61, 72, 83]))
+        await ctx.send(f"{prefix_owo}")
+
+
+@bot.command(pass_context=True)
 async def count(ctx):
     content = ctx.message.content
     await ctx.message.delete()
