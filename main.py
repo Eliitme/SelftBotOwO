@@ -147,7 +147,7 @@ async def spam(ctx):
         print(f"{at()}: {Fore.RED}spam off")
 
     while spamOwO:
-        await asyncio.sleep(random.choice([61, 72, 83]))
+        await asyncio.sleep(random.choice([21, 32, 43]))
         await ctx.send(f"{prefix_owo}")
 
 
