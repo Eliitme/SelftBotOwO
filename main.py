@@ -153,10 +153,9 @@ async def spam(ctx):
 
 @bot.command(pass_context=True)
 async def count(ctx):
-    content = ctx.message.content
     await ctx.message.delete()
 
-    channelId = content.split(' ')[1]
+    channelId = 899852247607943178
 
     channel = bot.get_channel(channelId)
 
