@@ -30,7 +30,7 @@ keep_alive()
 token = config("TOKEN")
 prefix_owo = 'owo'
 
-#---------------#
+# ---------------#
 
 bot = commands.Bot(command_prefix=prefix,
                    help_command=None,
@@ -53,17 +53,17 @@ async def s(ctx):
             await asyncio.sleep(1)
             await ctx.send(f"{prefix_owo}h")
             print(f"{at()}: {Fore.GREEN}succefully owoh")
-        async with ctx.typing():
-            await asyncio.sleep(1)
-            await ctx.send(f"{prefix_owo}b")
-            print(f"{at()}: {Fore.GREEN}succefully owob")
+        # async with ctx.typing():
+        #     await asyncio.sleep(1)
+        #     await ctx.send(f"{prefix_owo}b")
+        #     print(f"{at()}: {Fore.GREEN}succefully owob")
 
         recentMsg = await ctx.bot.get_channel(clientId).history(limit=5
                                                                 ).flatten()
         for msg in recentMsg:
             if msg.author.id == 408785106942164992 and 'spent' in msg.content.lower(
             ):
-                useGem = random.choice([1, 2])
+                useGem = random.choice([1])
                 print(f"{Fore.MAGENTA} {useGem}")
                 if useGem == 1:
                     async with ctx.typing():
@@ -95,6 +95,14 @@ async def gem(ctx, msg):
     inv = re.findall(r'`(.*?)`', msg)
     quantity = re.findall(r'>(.*?)\s', msg)
 
+    # remove 0 before number from inv
+    for i in range(len(inv)):
+        inv[i] = inv[i].replace('0', '')
+
+    # remove 0 before number from quantity
+    for i in range(len(quantity)):
+        quantity[i] = quantity[i].replace('0', '')
+
     for item in quantity:
         arrQuantity.append(item.strip().translate(str.maketrans(dict)))
 
@@ -106,7 +114,7 @@ async def gem(ctx, msg):
     gem3 = ''
 
     def getValue(key):
-        value = invWithQuantity.get(key)
+        value = invWithQuantity.get((key))
         if value:
             return value
         else:
@@ -118,6 +126,9 @@ async def gem(ctx, msg):
             gem1 = str(int(i) + 51)
             gem2 = str(int(i) + 65)
             gem3 = str(int(i) + 72)
+
+            if gem1 and gem2 and gem3:
+                break
 
     async with ctx.typing():
         await asyncio.sleep(random.choice([7, 8, 9]))
