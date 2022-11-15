@@ -53,10 +53,10 @@ async def s(ctx):
             await asyncio.sleep(1)
             await ctx.send(f"{prefix_owo}h")
             print(f"{at()}: {Fore.GREEN}succefully owoh")
-        # async with ctx.typing():
-        #     await asyncio.sleep(1)
-        #     await ctx.send(f"{prefix_owo}b")
-        #     print(f"{at()}: {Fore.GREEN}succefully owob")
+        async with ctx.typing():
+            await asyncio.sleep(1)
+            await ctx.send(f"{prefix_owo}b")
+            print(f"{at()}: {Fore.GREEN}succefully owob")
 
         recentMsg = await ctx.bot.get_channel(clientId).history(limit=5
                                                                 ).flatten()
