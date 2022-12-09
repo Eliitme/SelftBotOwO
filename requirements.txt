@@ -4,3 +4,6 @@ python-decouple
 flask
 webserver
 requests
+beautifulsoup4
+lxml
+selenium

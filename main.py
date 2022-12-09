@@ -6,6 +6,8 @@ from webserver import keep_alive
 import time
 import re
 
+from sele import Crawling
+
 
 import random
 
@@ -42,6 +44,41 @@ def at():
     return f'{time.strftime("%d %b %Y %H:%M:%S", time.localtime())}'
 
 
+async def checkCaptcha(ctx, clientId):
+    global dmcs
+    recentMsg = await ctx.bot.get_channel(clientId).history(limit=5
+                                                            ).flatten()
+    for msg in recentMsg:
+        if msg.author.id == 408785106942164992 and 'captcha' in msg.content.lower(
+        ):
+            async with ctx.typing():
+                await asyncio.sleep(1)
+                dmcs = False
+                print(f"{at()}: {Fore.RED}stop capcha")
+
+
+async def useGem(ctx, clientId):
+
+    recentMsg = await ctx.bot.get_channel(clientId).history(limit=5
+                                                            ).flatten()
+    for msg in recentMsg:
+        if msg.author.id == 408785106942164992 and 'spent' in msg.content.lower(
+        ):
+            useGem = random.choice([1, 2])
+            if useGem == 1:
+                async with ctx.typing():
+                    await asyncio.sleep(random.choice([1, 2, 3]))
+                    await ctx.send(f"{prefix_owo}inv")
+                checkInv = await ctx.bot.get_channel(clientId).history(
+                    limit=5).flatten()
+                msgContent = ''
+                for msgonce in checkInv:
+                    if 'inventory' in msgonce.content.lower():
+                        msgContent = msgonce.content.lower()
+                if msgContent:
+                    await gem(ctx, msgContent)
+
+
 @bot.command(pass_context=True)
 async def s(ctx):
     clientId = ctx.message.channel.id
@@ -53,37 +90,16 @@ async def s(ctx):
             await asyncio.sleep(1)
             await ctx.send(f"{prefix_owo}h")
             print(f"{at()}: {Fore.GREEN}succefully owoh")
+
+        await useGem(ctx, clientId)
+        await checkCaptcha(ctx, clientId)
+
         async with ctx.typing():
             await asyncio.sleep(1)
             await ctx.send(f"{prefix_owo}b")
             print(f"{at()}: {Fore.GREEN}succefully owob")
 
-        recentMsg = await ctx.bot.get_channel(clientId).history(limit=5
-                                                                ).flatten()
-
-        for msg in recentMsg:
-            if msg.author.id == 408785106942164992 and 'spent' in msg.content.lower(
-            ):
-                useGem = random.choice([1, 2])
-                if useGem == 1:
-                    async with ctx.typing():
-                        await asyncio.sleep(random.choice([1, 2, 3]))
-                        await ctx.send(f"{prefix_owo}inv")
-                    checkInv = await ctx.bot.get_channel(clientId).history(
-                        limit=5).flatten()
-                    msgContent = ''
-                    for msgonce in checkInv:
-                        if 'inventory' in msgonce.content.lower():
-                            msgContent = msgonce.content.lower()
-                    if msgContent:
-                        await gem(ctx, msgContent)
-
-            if msg.author.id == 408785106942164992 and 'captcha' in msg.content.lower(
-            ):
-                async with ctx.typing():
-                    await asyncio.sleep(1)
-                    dmcs = False
-                    print(f"{at()}: {Fore.RED}stop capcha")
+        await checkCaptcha(ctx, clientId)
 
         buy = random.choice([1, 2])
 
@@ -152,77 +168,134 @@ async def z(ctx):
     dmcs = False
 
 
-@bot.command(pass_context=True)
-async def spam(ctx):
-    content = ctx.message.content
-    status = content.split(' ')[1]
-    await ctx.message.delete()
-    global spamOwO
-    if (status == 'on'):
-        spamOwO = True
-        print(f"{at()}: {Fore.GREEN}spam on")
-    elif (status == 'off'):
-        spamOwO = False
-        print(f"{at()}: {Fore.RED}spam off")
+# @bot.command(pass_context=True)
+# async def spam(ctx):
+#     content = ctx.message.content
+#     status = content.split(' ')[1]
+#     await ctx.message.delete()
+#     global spamOwO
+#     if (status == 'on'):
+#         spamOwO = True
+#         print(f"{at()}: {Fore.GREEN}spam on")
+#     elif (status == 'off'):
+#         spamOwO = False
+#         print(f"{at()}: {Fore.RED}spam off")
 
-    while spamOwO:
-        await asyncio.sleep(random.choice([21, 32, 43]))
-        await ctx.send(f"{prefix_owo}")
-
-
-@bot.command(pass_context=True)
-async def count(ctx):
-    global dcount
-    dcount = True
-
-    await ctx.message.delete()
-
-    channelId = 899852247607943178
-
-    channel = bot.get_channel(channelId)
-
-    while dcount:
-
-        message = await channel.history(limit=1).flatten()
-
-        lastMessage = message[0].content
-        author = message[0].author
-
-        lastMessage = lastMessage.split(' ')[0]
-        lastMessage = int(lastMessage)
-
-        print(f"{at()}: {Fore.CYAN} {author.id} count: {lastMessage}")
-
-        if str(author.id) != str(bot.user.id):
-            await asyncio.sleep(1)
-            lastMessage += 1
-            await channel.send(lastMessage)
-            print(
-                f"{at()}: {Fore.CYAN} {bot.user.id} count {lastMessage}")
-        await asyncio.sleep(4)
+#     while spamOwO:
+#         await asyncio.sleep(random.choice([21, 32, 43]))
+#         await ctx.send(f"{prefix_owo}")
 
 
-def convertNum(str):
-    num = ''
-    try:
-        num = int(str)
-    except:
-        num = ''
+# @bot.command(pass_context=True)
+# async def count(ctx):
+#     global dcount
+#     dcount = True
 
-    return num
+#     await ctx.message.delete()
 
+#     channelId = 899852247607943178
+
+#     channel = bot.get_channel(channelId)
+
+#     while dcount:
+
+#         message = await channel.history(limit=1).flatten()
+
+#         lastMessage = message[0].content
+#         author = message[0].author
+
+#         lastMessage = lastMessage.split(' ')[0]
+#         lastMessage = int(lastMessage)
+
+#         print(f"{at()}: {Fore.CYAN} {author.id} count: {lastMessage}")
+
+#         if str(author.id) != str(bot.user.id):
+#             await asyncio.sleep(1)
+#             lastMessage += 1
+#             await channel.send(lastMessage)
+#             print(
+#                 f"{at()}: {Fore.CYAN} {bot.user.id} count {lastMessage}")
+#         await asyncio.sleep(4)
+
+
+# def convertNum(str):
+#     num = ''
+#     try:
+#         num = int(str)
+#     except:
+#         num = ''
+
+#     return num
+
+
+# @bot.command()
+# async def stop_count(ctx):
+#     await ctx.message.delete()
+#     global dcount
+#     dcount = False
 
 @bot.command()
-async def stop_count(ctx):
+async def catch(ctx):
     await ctx.message.delete()
-    global dcount
-    dcount = False
+
+    # get last keyword of message
+
+    global catchPokemon
+    catchPokemon = True
+
+    while catchPokemon:
+        # get message from bot id = 669228505128501258
+        message = await ctx.channel.history(limit=5).flatten()
+
+        # reverse message
+        message.reverse()
+
+        lastMessage = message[0]
+
+        for i in range(len(message)):
+            if message[i].author.id == 669228505128501258 and message[i].embeds and message[i].embeds[0].image:
+                lastMessage = message[i]
+            if 'Congratulations' in message[i].content:
+                lastMessage = None
+
+        url = ''
+
+        if lastMessage != None:
+            if lastMessage.embeds[0].image.url:
+                url = lastMessage.embeds[0].image.url
+
+        if url != '':
+            pokemonName = Crawling(url)
+
+            # get pokemon name
+            pokemonName = pokemonName.get_site_info()
+
+            async with ctx.typing():
+                await asyncio.sleep(1)
+                await ctx.send(f".catch {pokemonName}")
+                print(f"{at()}: {Fore.YELLOW}catch {pokemonName}")
+                await asyncio.sleep(1)
+
+        await asyncio.sleep(5)
 
 
 @bot.event
 async def on_ready():
-    activity = discord.Game(name="", type=4)
-    await bot.change_presence(status=discord.Status.online, activity=activity)
+
+    await bot.change_presence(status=discord.Status.online,)
+
+    loop = True
+
+    # while loop:
+    #     random_status = random.choice([1, 2, 3])
+
+    #     if random_status == 1:
+    #         await bot.change_presence(activity=activity)
+    #     elif random_status == 2:
+    #         await bot.change_presence(activity=activity2)
+
+    #     await asyncio.sleep(10)
+
     print(f''.join("READY"))
 
 
